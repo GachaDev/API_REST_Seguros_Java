@@ -48,11 +48,12 @@ public class Mapper {
         asistenciaMedicaDTO.setFecha(asistenciaMedica.getFecha());
         asistenciaMedicaDTO.setHora(asistenciaMedica.getHora());
         asistenciaMedicaDTO.setImporte(asistenciaMedica.getImporte());
+        asistenciaMedicaDTO.setSeguroId(asistenciaMedica.getSeguro().getIdSeguro());
 
         return asistenciaMedicaDTO;
     }
 
-    public static AsistenciaMedica DTOToEntity(AsistenciaMedicaDTO asistenciaMedicaDTO) {
+    public static AsistenciaMedica DTOToEntity(AsistenciaMedicaDTO asistenciaMedicaDTO, Seguro seguro) {
         AsistenciaMedica asistenciaMedica = new AsistenciaMedica();
 
         asistenciaMedica.setBreveDescripcion(asistenciaMedicaDTO.getBreveDescripcion());
@@ -62,6 +63,7 @@ public class Mapper {
         asistenciaMedica.setFecha(asistenciaMedicaDTO.getFecha());
         asistenciaMedica.setHora(asistenciaMedicaDTO.getHora());
         asistenciaMedica.setImporte(asistenciaMedicaDTO.getImporte());
+        asistenciaMedica.setSeguro(seguro);
 
         return asistenciaMedica;
     }

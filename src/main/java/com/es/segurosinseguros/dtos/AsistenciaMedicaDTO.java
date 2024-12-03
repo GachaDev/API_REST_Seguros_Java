@@ -11,8 +11,9 @@ public class AsistenciaMedicaDTO {
     private LocalDate fecha;
     private LocalTime hora;
     private double importe;
+    private Long seguroId;
 
-    public AsistenciaMedicaDTO(String breveDescripcion, String lugar, String explicacion, String tipoAsistencia, LocalDate fecha, LocalTime hora, double importe) {
+    public AsistenciaMedicaDTO(String breveDescripcion, String lugar, String explicacion, String tipoAsistencia, LocalDate fecha, LocalTime hora, double importe, Long seguroId) {
         this.breveDescripcion = breveDescripcion;
         this.lugar = lugar;
         this.explicacion = explicacion;
@@ -20,6 +21,7 @@ public class AsistenciaMedicaDTO {
         this.fecha = fecha;
         this.hora = hora;
         this.importe = importe;
+        this.seguroId = seguroId;
     }
 
     public AsistenciaMedicaDTO() {}
@@ -78,5 +80,13 @@ public class AsistenciaMedicaDTO {
 
     public void setImporte(double importe) {
         this.importe = importe;
+    }
+
+    public Long getSeguroId() {
+        return seguroId;
+    }
+
+    public void setSeguroId(Long seguroId) {
+        this.seguroId = seguroId;
     }
 }
