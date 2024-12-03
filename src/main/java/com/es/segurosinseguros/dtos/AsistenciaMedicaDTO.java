@@ -1,4 +1,4 @@
-package com.es.segurosinseguros.model;
+package com.es.segurosinseguros.dtos;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

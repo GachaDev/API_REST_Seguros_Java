@@ -1,4 +1,4 @@
-package com.es.segurosinseguros.model;
+package com.es.segurosinseguros.dtos;
 
 public class SeguroDTO {
     private String nif;

@@ -1,9 +1,9 @@
 package com.es.segurosinseguros.utils;
 
 import com.es.segurosinseguros.model.AsistenciaMedica;
-import com.es.segurosinseguros.model.AsistenciaMedicaDTO;
+import com.es.segurosinseguros.dtos.AsistenciaMedicaDTO;
 import com.es.segurosinseguros.model.Seguro;
-import com.es.segurosinseguros.model.SeguroDTO;
+import com.es.segurosinseguros.dtos.SeguroDTO;
 
 public class Mapper {
     public static SeguroDTO entityToDTO(Seguro seguro) {

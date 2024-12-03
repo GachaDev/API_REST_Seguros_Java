@@ -3,6 +3,7 @@ package com.es.segurosinseguros.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "seguros")
@@ -31,20 +32,25 @@ public class Seguro {
     @Column(nullable = false)
     private Boolean embarazada;
 
-    public Seguro(String nif, String nombre, String ape1, String ape2, int edad, int numHijos, LocalDate fechaCreacion, String sexo, Boolean casado, Boolean embarazada) {
+    @OneToMany(mappedBy = "seguro", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<AsistenciaMedica> asistencias;
+
+    public Seguro(String nif, String nombre, String ape1, String ape2, int edad, int numHijos, String sexo, Boolean casado, Boolean embarazada) {
         this.nif = nif;
         this.nombre = nombre;
         this.ape1 = ape1;
         this.ape2 = ape2;
         this.edad = edad;
         this.numHijos = numHijos;
-        this.fechaCreacion = fechaCreacion;
+        this.fechaCreacion = LocalDate.now();
         this.sexo = sexo;
         this.casado = casado;
         this.embarazada = embarazada;
     }
 
-    public Seguro() {}
+    public Seguro() {
+        this.fechaCreacion = LocalDate.now();
+    }
 
     public Long getIdSeguro() {
         return idSeguro;

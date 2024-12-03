@@ -2,7 +2,7 @@ package com.es.segurosinseguros.controller;
 
 import com.es.segurosinseguros.exception.BadRequestException;
 import com.es.segurosinseguros.exception.NotFoundException;
-import com.es.segurosinseguros.model.SeguroDTO;
+import com.es.segurosinseguros.dtos.SeguroDTO;
 import com.es.segurosinseguros.service.SeguroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,4 +43,36 @@ public class SeguroController {
         return new ResponseEntity<>(seguroDTO, HttpStatus.OK);
     }
 
+    @PostMapping("/")
+    public ResponseEntity<SeguroDTO> create(@RequestBody SeguroDTO seguroDTO) {
+        if (seguroDTO == null) {
+            throw new BadRequestException("El cuerpo de la solicitud no puede estar vacío.");
+        }
+
+        SeguroDTO createdSeguro = service.create(seguroDTO);
+
+        return new ResponseEntity<>(createdSeguro, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SeguroDTO> update(@PathVariable String id, @RequestBody SeguroDTO seguroDTO) {
+        if (id == null || id.isBlank()) {
+            throw new BadRequestException("id no válida");
+        }
+
+        SeguroDTO updatedSeguro = service.update(id, seguroDTO);
+
+        return new ResponseEntity<>(updatedSeguro, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        if (id == null || id.isBlank()) {
+            throw new BadRequestException("id no válida");
+        }
+
+        service.delete(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
