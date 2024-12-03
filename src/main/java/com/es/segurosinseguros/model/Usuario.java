@@ -18,6 +18,9 @@ public class Usuario {
 
     private String rol;
 
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Seguro seguro;
+
     public Usuario(Long id, String username, String password, String rol) {
         this.id = id;
         this.username = username;

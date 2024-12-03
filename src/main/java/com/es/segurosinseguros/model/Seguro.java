@@ -31,9 +31,11 @@ public class Seguro {
     private Boolean casado;
     @Column(nullable = false)
     private Boolean embarazada;
-
     @OneToMany(mappedBy = "seguro", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<AsistenciaMedica> asistencias;
+    @OneToOne
+    @JoinColumn(name = "id_usuario", nullable = false, unique = true)
+    private Usuario usuario;
 
     public Seguro(String nif, String nombre, String ape1, String ape2, int edad, int numHijos, String sexo, Boolean casado, Boolean embarazada) {
         this.nif = nif;
