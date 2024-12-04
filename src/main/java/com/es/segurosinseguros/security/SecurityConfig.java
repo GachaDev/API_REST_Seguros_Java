@@ -1,7 +1,9 @@
 package com.es.segurosinseguros.security;
 
 import com.es.segurosinseguros.exception.DataBaseException;
+import com.es.segurosinseguros.model.AsistenciaMedica;
 import com.es.segurosinseguros.model.Seguro;
+import com.es.segurosinseguros.repository.AsistenciaMedicaRepository;
 import com.es.segurosinseguros.repository.SeguroRepository;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -40,6 +42,9 @@ public class SecurityConfig {
 
     @Autowired
     private SeguroRepository seguroRepository;
+
+    @Autowired
+    private AsistenciaMedicaRepository asistenciaMedicaRepository;
 
     private AuthorizationManager<RequestAuthorizationContext> getSeguroByIdManager() {
         return (authentication, object) -> {
@@ -95,7 +100,33 @@ public class SecurityConfig {
                 return new AuthorizationDecision(true);
             }
 
-            return new AuthorizationDecision(isAdmin);
+            String path = object.getRequest().getRequestURI();
+            String id = path.replaceAll("/asistencias/", "");
+            Long idS = 0L;
+
+            try {
+                idS = Long.parseLong(id);
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException("La id debe de ser un número correcto");
+            }
+
+            AsistenciaMedica asistenciaMedica = null;
+
+            try {
+                asistenciaMedica = asistenciaMedicaRepository.findById(idS).orElse(null);
+            } catch (Exception e) {
+                throw new DataBaseException("error inesperado en la base de datos. " + e.getMessage());
+            }
+
+            if (asistenciaMedica == null) {
+                return new AuthorizationDecision(false);
+            }
+
+            if (asistenciaMedica.getSeguro().getUsuario().getUsername().equals(auth.getName())) {
+                return new AuthorizationDecision(true);
+            }
+
+            return new AuthorizationDecision(false);
         };
     }
 
