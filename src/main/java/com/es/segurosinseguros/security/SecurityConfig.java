@@ -38,8 +38,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/usuarios/login", "/usuarios/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/seguros/").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/asistencias/").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/seguros/").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/asistencias/").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
