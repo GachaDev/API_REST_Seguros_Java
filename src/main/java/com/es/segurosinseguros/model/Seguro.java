@@ -141,4 +141,12 @@ public class Seguro {
     public void setEmbarazada(Boolean embarazada) {
         this.embarazada = embarazada;
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

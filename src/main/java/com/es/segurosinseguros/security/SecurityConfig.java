@@ -1,5 +1,8 @@
 package com.es.segurosinseguros.security;
 
+import com.es.segurosinseguros.exception.DataBaseException;
+import com.es.segurosinseguros.model.Seguro;
+import com.es.segurosinseguros.repository.SeguroRepository;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -35,14 +38,12 @@ public class SecurityConfig {
     @Autowired
     private RsaKeyProperties rsaKeys;
 
+    @Autowired
+    private SeguroRepository seguroRepository;
+
     private AuthorizationManager<RequestAuthorizationContext> getSeguroByIdManager() {
         return (authentication, object) -> {
             Authentication auth = authentication.get();
-            String path = object.getRequest().getRequestURI();
-
-            System.out.println(path);
-
-            System.out.println("Usuario autenticado: " + auth.getName());
 
             boolean isAdmin = auth.getAuthorities().stream()
                     .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
@@ -51,7 +52,33 @@ public class SecurityConfig {
                 return new AuthorizationDecision(true);
             }
 
-            return new AuthorizationDecision(isAdmin);
+            String path = object.getRequest().getRequestURI();
+            String id = path.replaceAll("/seguros/", "");
+            Long idS = 0L;
+
+            try {
+                idS = Long.parseLong(id);
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException("La id debe de ser un número correcto");
+            }
+
+            Seguro seguro = null;
+
+            try {
+                seguro = seguroRepository.findById(idS).orElse(null);
+            } catch (Exception e) {
+                throw new DataBaseException("error inesperado en la base de datos. " + e.getMessage());
+            }
+
+            if (seguro == null) {
+                return new AuthorizationDecision(false);
+            }
+
+            if (seguro.getUsuario().getUsername().equals(auth.getName())) {
+                return new AuthorizationDecision(true);
+            }
+
+            return new AuthorizationDecision(false);
         };
     }
 
