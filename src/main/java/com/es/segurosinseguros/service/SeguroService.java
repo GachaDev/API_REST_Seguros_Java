@@ -5,7 +5,9 @@ import com.es.segurosinseguros.exception.DataBaseException;
 import com.es.segurosinseguros.exception.NotFoundException;
 import com.es.segurosinseguros.model.Seguro;
 import com.es.segurosinseguros.dtos.SeguroDTO;
+import com.es.segurosinseguros.model.Usuario;
 import com.es.segurosinseguros.repository.SeguroRepository;
+import com.es.segurosinseguros.repository.UsuarioRepository;
 import com.es.segurosinseguros.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ import java.util.List;
 public class SeguroService {
     @Autowired
     private SeguroRepository repository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<SeguroDTO> getAll() {
         List<Seguro> seguros;
@@ -100,7 +105,13 @@ public class SeguroService {
         validateDTO(seguroDTO);
 
         try {
-            Seguro seguro = Mapper.DTOToEntity(seguroDTO);
+            Usuario usuario = usuarioRepository.findById(seguroDTO.getId_usuario()).orElse(null);
+
+            if (usuario == null) {
+                throw new NotFoundException("Usuario no encontrado");
+            }
+
+            Seguro seguro = Mapper.DTOToEntity(seguroDTO, usuario);
             Seguro savedSeguro = repository.save(seguro);
 
             return Mapper.entityToDTO(savedSeguro);
@@ -120,6 +131,12 @@ public class SeguroService {
 
         validateDTO(seguroDTO);
 
+        Usuario usuario = usuarioRepository.findById(seguroDTO.getId_usuario()).orElse(null);
+
+        if (usuario == null) {
+            throw new NotFoundException("Usuario no encontrado");
+        }
+
         Seguro existingSeguro = repository.findById(idL).orElse(null);
 
         if (existingSeguro == null) {
@@ -136,6 +153,7 @@ public class SeguroService {
             existingSeguro.setSexo(seguroDTO.getSexo());
             existingSeguro.setCasado(seguroDTO.isCasado());
             existingSeguro.setEmbarazada(seguroDTO.isEmbarazada());
+            existingSeguro.setUsuario(usuario);
 
             Seguro updatedSeguro = repository.save(existingSeguro);
 

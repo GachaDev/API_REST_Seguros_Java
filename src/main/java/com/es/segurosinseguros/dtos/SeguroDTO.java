@@ -10,10 +10,11 @@ public class SeguroDTO {
     private String sexo;
     private boolean casado;
     private boolean embarazada;
+    private Long id_usuario;
 
     public SeguroDTO() {}
 
-    public SeguroDTO(String nif, String nombre, String ape1, String ape2, int edad, int numHijos, String sexo, boolean casado, boolean embarazada) {
+    public SeguroDTO(String nif, String nombre, String ape1, String ape2, int edad, int numHijos, String sexo, boolean casado, boolean embarazada, Long id_usuario) {
         this.nif = nif;
         this.nombre = nombre;
         this.ape1 = ape1;
@@ -23,6 +24,7 @@ public class SeguroDTO {
         this.sexo = sexo;
         this.casado = casado;
         this.embarazada = embarazada;
+        this.id_usuario = id_usuario;
     }
 
     public String getNif() {
@@ -95,5 +97,13 @@ public class SeguroDTO {
 
     public void setEmbarazada(boolean embarazada) {
         this.embarazada = embarazada;
+    }
+
+    public Long getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(Long id_usuario) {
+        this.id_usuario = id_usuario;
     }
 }

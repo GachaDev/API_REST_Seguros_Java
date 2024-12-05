@@ -4,6 +4,7 @@ import com.es.segurosinseguros.model.AsistenciaMedica;
 import com.es.segurosinseguros.dtos.AsistenciaMedicaDTO;
 import com.es.segurosinseguros.model.Seguro;
 import com.es.segurosinseguros.dtos.SeguroDTO;
+import com.es.segurosinseguros.model.Usuario;
 
 public class Mapper {
     public static SeguroDTO entityToDTO(Seguro seguro) {
@@ -18,11 +19,12 @@ public class Mapper {
         seguroDTO.setSexo(seguro.getSexo());
         seguroDTO.setCasado(seguro.getCasado());
         seguroDTO.setEmbarazada(seguro.getEmbarazada());
+        seguroDTO.setId_usuario(seguro.getUsuario().getId());
 
         return seguroDTO;
     }
 
-    public static Seguro DTOToEntity(SeguroDTO seguroDTO) {
+    public static Seguro DTOToEntity(SeguroDTO seguroDTO, Usuario usuario) {
         Seguro seguro = new Seguro();
 
         seguro.setNif(seguroDTO.getNif());
@@ -34,6 +36,7 @@ public class Mapper {
         seguro.setSexo(seguroDTO.getSexo());
         seguro.setCasado(seguroDTO.isCasado());
         seguro.setEmbarazada(seguroDTO.isEmbarazada());
+        seguro.setUsuario(usuario);
 
         return seguro;
     }
